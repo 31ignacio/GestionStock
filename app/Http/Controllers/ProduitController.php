@@ -16,7 +16,7 @@ class ProduitController extends Controller
     //
     public function index()
     {
-$produits = Produit::orderBy('created_at', 'desc')->get();	//dd($produits);
+        $produits = Produit::orderBy('created_at', 'desc')->get();	//dd($produits);
 
         return view('Produits.index',compact('produits'));
     }

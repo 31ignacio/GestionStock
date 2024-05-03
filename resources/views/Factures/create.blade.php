@@ -29,7 +29,7 @@
                             <option></option>
 
                             @foreach ($clients as $client)
-                                <option value="{{ $client->id }}">{{ $client->nom }} {{ $client->prenom }}</option>
+                                <option value="{{ $client->id }}">{{ $client->societe }}</option>
                             @endforeach
 
                         </select>
@@ -460,22 +460,21 @@
         validateQuantite();
     </script>
 
-    {{-- Control sur la date --}}
+   {{-- Control sur la date --}}
     <script>
         // Récupérer la date d'aujourd'hui
         var dateActuelle = new Date();
         var annee = dateActuelle.getFullYear();
         var mois = ('0' + (dateActuelle.getMonth() + 1)).slice(-2);
         var jour = ('0' + dateActuelle.getDate()).slice(-2);
-
+    
         // Formater la date pour l'attribut value de l'input
         var dateAujourdhui = annee + '-' + mois + '-' + jour;
-
-        // Définir la valeur et la propriété min de l'input
+    
+        // Définir la valeur et la propriété max de l'input
         var inputDate = document.getElementById('date');
         inputDate.value = dateAujourdhui;
-        inputDate.min = dateAujourdhui;
-
+        inputDate.max = dateAujourdhui;
     </script>
-
+    
 @endsection

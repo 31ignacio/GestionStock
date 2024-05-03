@@ -46,7 +46,7 @@
 
 
                     <tr>
-                      <td>{{ $factureUnique->client->nom }} {{ $factureUnique->client->prenom}}</td>
+                      <td>{{ $factureUnique->client->societe }}</td>
 
                         <td><b>{{ $factureUnique->code}}</b></td>
 

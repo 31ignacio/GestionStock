@@ -51,7 +51,7 @@
                     <div class="row" >
                         <div class="col-md-12">
                             <label for="nom">Quantité</label>
-                            <input type="number" class="form-control" id="quantite" name="quantite" value="{{ $produit->quantite }}" required style="border-radius:10px;">
+                            <input type="text" class="form-control" id="quantite" name="quantite" value="{{ $produit->quantite }}" required style="border-radius:10px;">
 
                             {{-- Affiche les erreur sous le input (le @error prend le name du input) --}}
                             @error('quantite')

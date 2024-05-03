@@ -119,6 +119,56 @@
                                 </p>
                             </a>
                         </li>
+
+                        @auth
+                        @if(auth()->user()->role_id == 1)
+                       
+                       {{-- Utilisateurs --}}
+                         <li class="nav-item">
+                           <a href="#" class="nav-link">
+                               <i class="fas fa-user"></i>
+
+                               <p>
+                                   Utilisateurs
+                                   <i class="fas fa-angle-left right"></i>
+                                   {{-- <span class="badge badge-info right">6</span> --}}
+                               </p>
+                           </a>
+                           <ul class="nav nav-treeview">
+                               
+                               <li class="nav-item">
+                                   <a href="{{ route('admin.create') }}" class="nav-link">
+                                       <i class="far fa-circle nav-icon"></i>
+                                       <p>Ajouter</p>
+                                   </a>
+                               </li>
+
+                               <li class="nav-item">
+                                   <a href="{{ route('admin') }}" class="nav-link">
+                                       <i class="far fa-circle nav-icon"></i>
+                                       <p>Listes</p>
+                                   </a>
+                               </li>
+
+                               {{-- <li class="nav-item">
+                                   <a href="{{ route('admin2') }}" class="nav-link">
+                                       <i class="far fa-circle nav-icon"></i>
+                                       <p>Utilisateurs inactifs</p>
+                                   </a>
+                               </li> --}}
+
+
+
+
+
+                           </ul>
+                       </li>
+
+                     @endif
+                     @endauth
+                       
+
+
                             {{-- Client --}}
                         <li class="nav-item">
                             <a href="#" class="nav-link">
@@ -295,6 +345,7 @@
     <!-- jQuery -->
 
   {{-- Dans votre vue --}}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
 
     <script src="../../../../AD/plugins/jquery/jquery.min.js"></script>
     <!-- Bootstrap 4 -->
