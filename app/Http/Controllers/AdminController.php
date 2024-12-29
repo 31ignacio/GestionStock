@@ -15,61 +15,45 @@ use Illuminate\Support\Facades\Session as FacadesSession;
 
 class AdminController extends Controller
 {
-    //
-
+    /**
+     * Afficher la liste des utilisateurs
+     */
     public function index(){
-      // dd(Auth::id());
-
-        $admins = User::all();
-
-        //dd($admins);
-
-        return view('Admin.index',compact('admins'));
-    }
-
-    public function create(){
-
-        $roles = Role::all();
-        return view('Admin.create',compact('roles'));
+      
+        $admins = User::
+        orderBy('created_at', 'desc')
+        ->get();
+      $roles = Role::all();
+      
+        return view('Admin.index',compact('admins','roles'));
     }
 
 
+    /**
+     * Enregistrer un utilsateur
+    */
     public function store(User $user,createUsersRequest $request)
     {
 
         try {
-            $confirm= $request->confirm_password;
-
+            
             $user->name = $request->name;
             $user->email = $request->email;
-            $user->password =Hash::make($request->password);
             $user->role_id= $request->role;
-
-            //dd($user);
+            $user->password =Hash::make($request->password);
             $user->save();
 
-            
             return redirect()->route('admin')->with('success_message', 'Utilisateur ajouté avec succès');
             
         } catch (Exception $e) {
-            //dd($e);
-            throw new Exception('Une erreur est survenue lors de la création de cet administrateur');
+           
+            return back()->with('error_message', "Une erreur est survenue : " . $e->getMessage());
         }
     }
 
-    public function delete(User $admin)
-    {
-        //dd($admin);
-        //Enregistrer un nouveau département
-        try {
-            $admin->delete();
-
-            return redirect()->route('admin')->with('success_message', 'Utilisateur supprimé avec succès');
-        } catch (Exception $e) {
-            dd($e);
-        }
-    }
-
+   /**
+    * Déconnecté un utilisateur
+    */
     public function logout(){
 
         FacadesSession::flush();
@@ -78,12 +62,9 @@ class AdminController extends Controller
         return redirect()->route('login');
     }
 
-    public function edit(User $admin)
-    {
-        
-        return view('Admin.edit', compact('admin'));
-    }
-
+    /**
+     * Modifier un utilisateur
+     */
     public function update(User $admin, Request $request)
     {
         //Enregistrer un nouveau département
@@ -93,13 +74,40 @@ class AdminController extends Controller
             $admin->role_id = $request->role;
 
             $admin->update();
-            //return back()->with('success_message', 'Utilisateur mis à jour avec succès');
 
             return redirect()->route('admin')->with('success_message', 'Utilisateur mis à jour avec succès');
         } catch (Exception $e) {
-            dd($e);
+            return back()->with('error_message', "Une erreur est survenue : " . $e->getMessage());
+
         }
     }
 
+
+    /**
+     * Supprimer un utilisateur
+     */
+    public function delete(User $admin)
+    {
+        //Enregistrer un nouveau département
+        try {
+            $admin->delete();
+
+            return redirect()->route('admin')->with('success_message', 'Utilisateur supprimé avec succès');
+        } catch (Exception $e) {
+            return back()->with('error_message', "Une erreur est survenue : " . $e->getMessage());
+
+        }
+    }
+
+    /**
+     *  Activer/desactiver un utilisateur
+     * */ 
+    public function toggleStatus(User $admin)
+    {
+        $admin->estActif = !$admin->estActif; // Bascule entre 0 et 1
+        $admin->save();
+
+        return redirect()->back()->with('success_message', 'Statut mis à jour avec succès.');
+    }
 
 }

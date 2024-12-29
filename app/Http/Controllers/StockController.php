@@ -109,7 +109,39 @@ class StockController extends Controller
         return redirect()->route('stock.entrer')->with('success_message', 'Stock entrés avec succès.');
     }
 
-   
+    public function update(Request $request, $id)
+    {
+
+        // Valider les données du formulaire
+    $request->validate([
+        'libelle' => 'required',
+        'quantite' => 'required|numeric',
+    ]);
+        //dd($request);
+        // Mettre à jour le stock en fonction de l'ID avec les données reçues du formulaire
+        $stock = Stock::find($id);
+        $ancienDate= $stock->date;
+        $ancienStock= $stock->quantite;
+        if($request->date == null){
+            $stock->date = $ancienDate;
+        }else{
+            $stock->date = $request->date;
+        }
+        $stock->libelle = $request->libelle;
+        $stock->quantite = $request->quantite;
+        $stock->save();
+
+        $produit = Produit::where('libelle', $request->libelle)->first();
+    
+        $nouvelleQuantite = ($produit->quantite - $ancienStock ) + $request->quantite;
+        $produit->update(['quantite' => $nouvelleQuantite]);
+        
+        //dd($produit);
+        // Mettez à jour la quantité du produit
+       
+        return redirect()->route('stock.entrer')->with('success_message', 'Stock modifié avec succès.');
+
+    }
 
 
 }

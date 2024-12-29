@@ -43,7 +43,7 @@
 
                         <div class="col-md-12">
                             <label for="quantite">Quantité</label>
-                            <input type="number" class="form-control" id="quantite" name="quantite" value="{{ old('quantite') }}" required step="any" style="border-radius: 10px;">
+                            <input type="text" class="form-control" id="quantite" name="quantite" value="{{ old('quantite') }}" required step="any" style="border-radius: 10px;">
 
                             {{-- Affiche les erreur sous le input (le @error prend le name du input) --}}
                             @error('quantite')

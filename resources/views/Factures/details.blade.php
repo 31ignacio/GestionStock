@@ -2,18 +2,10 @@
 
 @section('content')
     <section class="content">
+        <br>
         <div class="container-fluid">
             <div class="row">
                 <div class="col-12">
-                    <div class="callout callout-info">
-                        <h5><i class="fas fa-info"></i> Note:</h5>
-                        <b>Cette page fournit une vue détaillée de la facture du client, présentant les informations
-                            essentielles telles que les produits/services achetés, les quantités, les tarifs unitaires, et
-                            le montant total. Elle offre une vision claire et exhaustive des transactions effectuées par le
-                            client.</b>
-                    </div>
-
-
                     <!-- Main content -->
                     <div class="invoice p-3 mb-3" id="my-table">
                         <!-- title row -->
