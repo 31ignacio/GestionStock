@@ -168,63 +168,53 @@
                                 </a>
                             </li>
                             {{-- Facture --}}
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="fas fa-file-invoice-dollar"></i>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <i class="fas fa-file-invoice-dollar"></i>
 
-                                <p>
-                                    Factures
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="{{ route('facture.index') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Liste des factures</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('facture.create') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Ajouter une facture</p>
-                                    </a>
-                                </li>
+                                    <p>
+                                        Factures
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="{{ route('facture.index') }}" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Liste des factures</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ route('facture.create') }}" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Ajouter une facture</p>
+                                        </a>
+                                    </li>
 
-                            </ul>
-                        </li>
+                                </ul>
+                            </li>
                             {{-- Stock --}}
-                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                         
+                        <li class="nav-item">
+                            <a href="{{route('stock.index')}}" class="nav-link">
                                 <i class="fas fa-warehouse"></i>
-
                                 <p>
-                                    Gestions Stocks
-                                    <i class="right fas fa-angle-left"></i>
+                                    Gestion de stocks
                                 </p>
                             </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="{{ route('stock.actuel') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Stocks actuels</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('stock.sortie') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Sortie de stocks</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('stock.entrer') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Entrés de stocks</p>
-                                    </a>
-                                </li>
-
-                            </ul>
                         </li>
+
+                                {{-- inventaires --}}
+
+                                <li class="nav-item">
+                                    <a href="{{route('inventaires.index')}}" class="nav-link">
+                                        <i class="fas fa-list"></i>
+                                        <p>
+                                            Inventaires
+                                        </p>
+                                    </a>
+                                </li>
+                                
                             {{-- Etat --}}
                         <li class="nav-item">
                             <a href="{{route('etat.index')}}" class="nav-link">

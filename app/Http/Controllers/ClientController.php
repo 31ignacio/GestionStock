@@ -74,6 +74,13 @@ class ClientController extends Controller
      */
     public function store(Client $client, saveClientRequest $request)
     {
+
+            // Vérifier si le produit existe déjà
+       $existingProduct = Client::where('telephone', $request->telephone)->first();
+
+       if ($existingProduct) {
+           return back()->with('error_message', 'Le numero de téléphone existe déjà.');
+       }
         try {
             $client->nom = $request->nom;
             $client->prenom = $request->prenom;

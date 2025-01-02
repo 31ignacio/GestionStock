@@ -78,9 +78,7 @@ Route::middleware(['auth'])->group(function(){
         Route::put('/update/{facture}', [FactureController::class, 'update'])->name('facture.update');
         Route::get('/details/{code}/{date}',[FactureController::class, 'details'])->name('facture.details');
         Route::get('/annuler',[FactureController::class, 'annuler'])->name('facture.annuler');
-    
         Route::get('/pdf/{facture}', [FactureController::class, "pdf"])->name('facture.pdf');
-    
         Route::get('/{facture}', [FactureController::class, 'delete'])->name('facture.delete');
     });
     
@@ -90,13 +88,15 @@ Route::middleware(['auth'])->group(function(){
         Route::get('/entrer', [StockController::class, 'entrer'])->name('stock.entrer');
         Route::get('/sortie', [StockController::class, 'sortie'])->name('stock.sortie');
         Route::get('/actuel', [StockController::class, 'actuel'])->name('stock.actuel');
-        Route::get('/create', [StockController::class, 'create'])->name('stock.create');
         Route::post('/create', [StockController::class, 'store'])->name('stock.store');
-        Route::get('/search-stock', [StockController::class, 'searchByLibelle'])->name('search.stock');
+        Route::get('/recherche/detail', [StockController::class, 'rechercheDetail'])->name('stock.rechercheDetail');
 
         Route::post('/stock/{id}', [StockController::class, 'update'])->name('stock.update');
 
     });
+
+    Route::get('/inventaires/details', [StockController::class, 'indexinventaire'])->name('inventaires.index');
+
     
     
 

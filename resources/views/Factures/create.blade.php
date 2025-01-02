@@ -59,10 +59,23 @@
 
         <!-- Main content -->
         <div class="invoice p-3 mb-3">
-           
+
             <form id="monFormulaire">
                 <div id="msg25"></div>
                 <div class="row">
+                    
+                    <div class="col-md-3" hidden>
+
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <button type="button" class="btn-sm btn-secondary">TVA(%)</button>
+                            </div>
+                            <input type="number" min=0 class="form-control" id='tva'>
+                        </div><br>
+                    </div>
+                </div>
+
+                <div class="row mb-5">
                     <div class="col-md-3">
 
                         <div class="input-group mb-3">
@@ -81,21 +94,7 @@
                         </div>
                         <div id="message" style="color: red;"></div>
 
-                    </div><br>
-                    <div class="col-md-1"></div>
-
-                    <div class="col-md-3">
-
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <button type="button" class="btn-sm btn-secondary">TVA(%)</button>
-                            </div>
-                            <input type="number" min=0 class="form-control" id='tva'>
-                        </div><br>
                     </div>
-                </div>
-
-                <div class="row">
                     <div class="col-md-3">
 
                         <div class="input-group mb-3">
@@ -105,7 +104,7 @@
                             <input type="number" value="00" min=0 class="form-control" id='quantite'>
                         </div>
                     </div>
-                    <div class="col-md-1"></div>
+                    {{-- <div class="col-md-1"></div> --}}
                     <div class="col-md-3">
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
@@ -114,12 +113,12 @@
                             <input type="number" min=0 class="form-control" id='prix'>
                         </div>
                     </div>
-                    <div class="col-md-5">
+                    <div class="col-md-3">
                         <input type="button" class="btn btn-primary" value="Ajouter" onclick="ajouterAuTableau()">
                         <input type="button" class="btn btn-danger" value="Annuler" onclick="supprimerDerniereLigne()">
                     </div>
                 </div>
-               
+
             </form>
             <!-- Table row -->
             <div class="row">
@@ -142,7 +141,7 @@
                 </div>
                 <!-- /.col -->
             </div>
-            
+
 
             <div class="row">
                 <!-- accepted payments column -->
@@ -179,12 +178,10 @@
                 </div>
                 <!-- /.col -->
             </div>
-            <!-- /.row -->
-
-            <!-- this row will not appear when printing -->
+           
             <div class="row no-print">
                 <div class="col-12">
-                    <button type="button" class="btn btn-success float-right"
+                    <button type="button" class="btn btn-success float-right valider" id="montantPaye"
                         style="margin-right: 5px;"onclick="enregistrerDonnees()">
                         <i class="fas fa-download"></i> Valider
                     </button>
@@ -305,13 +302,42 @@
             // Récupérer toutes les lignes du tableau
             var tableauBody = document.getElementById("monTableauBody");
             var date = document.getElementById("date").value;
-            var client = document.getElementById("client").value;
-            var mode = document.getElementById("mode").value;
-            var totalHT = document.getElementById("totalHT").textContent;
-            var totalTVA = document.getElementById("totalTVA").textContent;
-            var totalTTC = document.getElementById("totalTTC").textContent;
-            var montant = document.getElementById("montant").value;
-            var dette = document.getElementById("dette").value;
+            var client = document.getElementById("client").value.trim();
+            var mode = document.getElementById("mode").value.trim();
+            var totalHT = document.getElementById("totalHT").textContent.trim();
+            var totalTVA = document.getElementById("totalTVA").textContent.trim();
+            var totalTTC = document.getElementById("totalTTC").textContent.trim();
+            var montant = document.getElementById("montant").value.trim();
+            var dette = document.getElementById("dette").value.trim();
+
+            // Vérification des champs obligatoires
+            if (!client || !mode || !totalTTC) {
+                Toastify({
+                    text: "Veuillez remplir tous les champs obligatoires (Client, mode de paiement, Total TTC).",
+                    duration: 5000,
+                    close: true,
+                    gravity: "top", // Position du toast
+                    backgroundColor: "#dc3545", // Fond rouge (danger)
+                    className: "your-custom-class", // Classe CSS personnalisée
+                    stopOnFocus: true, // Arrêter le temps lorsque le toast est en focus
+                }).showToast();
+                return; // Arrêter l'exécution si les champs obligatoires ne sont pas remplis
+            }
+
+            // Vérification du montant payé si le mode de paiement est "2"
+            if (mode === "2" && !montant) {
+                Toastify({
+                    text: "Le montant payé est vide. Veuillez saisir un montant.",
+                    duration: 5000,
+                    close: true,
+                    gravity: "top", // Position du toast
+                    backgroundColor: "#dc3545", // Fond rouge (danger)
+                    className: "your-custom-class", // Classe CSS personnalisée
+                    stopOnFocus: true, // Arrêter le temps lorsque le toast est en focus
+                }).showToast();
+                return; // Arrêter l'exécution si le montant est vide
+            }
+
 
             var donnees = [];
 
@@ -332,6 +358,8 @@
 
             }
 
+            $('.valider').hide();
+
             // Envoyer les données au serveur via une requête AJAX
             $.ajax({
                 type: "POST",
@@ -349,9 +377,7 @@
                     dette
                 },
                 success: function(response) {
-                    var routeURL =
-                    "http://127.0.0.1:8000/facture"; // Remplacez ceci par l'URL réelle de la route
-
+                    
                     Toastify({
                         text: "Félicitations, la facture a été enregistrée avec succès !",
                         duration: 5000,
@@ -360,22 +386,14 @@
                         backgroundColor: "#4CAF50", // Fond vert
                         className: "your-custom-class", // Classe CSS personnalisée
                         stopOnFocus: true, // Arrêter le temps lorsque le toast est en focus
-                        onClose: function() {
-                            window.location.href = routeURL;
-                        }
-
+                        
                     }).showToast();
 
                     var url = "{{ route('facture.index') }}"
                     setTimeout(function() {
                         window.location = url
                     }, 5000)
-
-
-
-
                 },
-
             });
         }
     </script>
