@@ -13,79 +13,78 @@ use Illuminate\Http\Request;
 
 class ProduitController extends Controller
 {
-    //
+    /**
+     * Liste des produits
+     */
     public function index()
     {
-        $produits = Produit::orderBy('created_at', 'desc')->get();	//dd($produits);
+        $produits = Produit::orderBy('created_at', 'desc')->get();
 
         return view('Produits.index',compact('produits'));
     }
 
-    public function create()
-    {
-        return view('Produits.create');
-    }
-
+    /**
+     * Enregistrer un produit
+     */
     public function store(Produit $produit, Request $request)
     {
-       // dd(1);
+        $validated = $request->validate([
+            'libelle' => 'required|string|max:255',
+            'quantite' => 'required|numeric|min:0', // Accepte les décimaux
+        ]);
+
        // Obtenir la date du jour
        $dateDuJour = Carbon::now();
 
-        //Enregistrer un nouveau client
+       // Vérifier si le produit existe déjà
+       $existingProduct = Produit::where('libelle', $request->libelle)->first();
+
+        if ($existingProduct) {
+            return back()->with('error_message', 'Ce produit existe déjà.');
+        }
+
         try {
             $produit->ref = $request->ref;
             $produit->libelle = $request->libelle;
             $produit->quantite = $request->quantite;
             $produit->date = $dateDuJour;
-
-            //dd($produit);
             $produit->save();
 
-           // dd($client);
-
-           return new Response(200);
+            return redirect()->route('produit.index')->with('success_message', 'Produit enregistré avec succès.');
         } catch (Exception $e) {
-            dd($e);
-            return new Response(500);
+            return back()->with('error_message', 'Une erreur est survenue. Veuillez réessayer.');
         }
     }
 
-    public function edit(Produit $produit)
+    /**
+     * Editer un produit
+     */
+    public function update(Produit $produit,Request $request)
     {
-        return view('Produits.edit', compact('produit'));
-    }
-
-    public function update(Produit $produit, Request $request)
-    {
-        //Enregistrer un nouveau département
         try {
             $produit->ref = $request->ref;
             $produit->libelle = $request->libelle;
             $produit->quantite = $request->quantite;
             $produit->date = $request->date;
-
             $produit->update();
 
             return redirect()->route('produit.index')->with('success_message', 'Produit mis à jour avec succès');
         } catch (Exception $e) {
-            dd($e);
+            return back()->with('error_message', 'Une erreur est survenue. Veuillez réessayer.');
         }
     }
 
+    /**
+     * Supprimer un produit
+     */
     public function delete(Produit $produit)
     {
-        //Enregistrer un nouveau département
         try {
             $produit->delete();
 
             return redirect()->route('produit.index')->with('success_message', 'Produit supprimé avec succès');
         } catch (Exception $e) {
-            dd($e);
+            return back()->with('error_message', 'Une erreur est survenue. Veuillez réessayer.');
         }
     }
-
-
-
-
 }

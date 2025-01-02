@@ -5,9 +5,10 @@
 
 <section class="content">
     <div class="container-fluid">
+      <br>
       <div class="row">
-        <div class="col-md-2"></div>
-        <div class="col-sm-12 col-md-8">
+       
+        <div class="col-sm-12 col-md-12">
 
           <div class="card">
             <div class="card-header">
@@ -46,10 +47,9 @@
             </div>
             <!-- /.card-body -->
           </div>
-          <!-- /.card -->
+          
         </div>
-        <div class="col-md-2"></div>
-        <!-- /.col -->
+       
       </div>
       <!-- /.row -->
     </div>

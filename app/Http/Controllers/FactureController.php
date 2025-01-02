@@ -9,12 +9,9 @@ use App\Models\Produit;
 use DateTime; // Importez la classe DateTime en haut de votre fichier
 use Exception;
 use Symfony\Component\HttpFoundation\Response;
-use PDF;
 use Dompdf\Dompdf;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\DB;
-
 use Illuminate\Http\Request;
 
 class FactureController extends Controller
@@ -23,15 +20,12 @@ class FactureController extends Controller
 
     public function index()
     {
-        $factures = Facture::all();
+        $factures = Facture::orderby('date','desc')->get();
         // Créez une collection unique en fonction des colonnes code, date, client et totalHT
         $codesFacturesUniques = $factures->unique(function ($facture) {
             return $facture->code . $facture->date . $facture->client . $facture->totalHT . $facture->mode;
         });
 
-
-        //$factures = Facture::orderBy('code')->get()->groupBy('code');
-        //dd($codesFacturesUniques);
         return view('Factures.index', compact('factures', 'codesFacturesUniques'));
     }
 
@@ -40,16 +34,16 @@ class FactureController extends Controller
         // Récupérez les informations nécessaires à partir des paramètres (code et date) et envoyez-les à la vue
 
         $factures = Facture::all();
-        //dd($factures);
+        
         return view('Factures.details', compact('date', 'code', 'factures'));
     }
 
-    
+    /**
+     * Annuler la facture
+     */
     public function annuler(Request $request)
     {
-        // Récupérez les informations nécessaires à partir des paramètres (code et date) et envoyez-les à la vue
-        //dd($code);
-       // $factures = Facture::where('code',$code)->get();
+        
 	   $code =$request->factureCode;
         $factures = Facture::select('produit', 'quantite')->where('code', $code)->get();
 
@@ -62,9 +56,9 @@ class FactureController extends Controller
                 $produit->quantite = $nouvelleQuantite;
                 $produit->save();
             }
-           // dd($produit);
+           
         }
-        //dd($produit);
+        
         // Suppression de toutes les factures avec le code spécifié
         Facture::where('code', $code)->delete();
 
@@ -72,7 +66,9 @@ class FactureController extends Controller
         return back()->with('success_message', 'La facture a été annulée avec succès.');
     }
 
-
+    /**
+     * Afficher la page d'enregistrement d'une facture
+     */
     public function create()
     {
         $modes = ModePaiement::all();
@@ -102,8 +98,12 @@ class FactureController extends Controller
         return view('Factures.create', compact('clients', 'modes','produits'));
     }
 
+    /**
+     * Enregistrer la facture
+     */
     public function store(Request $request)
-    { // Récupérer les données JSON envoyées depuis le formulaire
+    { 
+        // Récupérer les données JSON envoyées depuis le formulaire
         $donnees = json_decode($request->input('donnees'));
         $client = $request->client;
         $dateString = $request->date;
@@ -117,7 +117,7 @@ class FactureController extends Controller
         //dd($montant);
         $prefix = 'Facture_';
 
-        $nombreAleatoire = rand(0, 1000); // Utilisation de rand()
+        $nombreAleatoire = rand(0, 10000); // Utilisation de rand()
 
 
         // Formatage du nouveau matricule avec la partie numérique
@@ -162,7 +162,7 @@ class FactureController extends Controller
         // Répondez avec une réponse de confirmation
         return response()->json(['message' => 'Données enregistrées avec succès']);
     }
-
+    
     public function pdf($facture,Request $request)
     {
         $date = $request->input('date');

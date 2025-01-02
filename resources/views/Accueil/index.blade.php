@@ -1,30 +1,6 @@
 @extends('layouts.master2')
 
 @section('content')
-    @foreach ($produits as $produit)
-        <tr>
-            <td><span style="display:none;">{{ $produit->libelle }}</span></td>
-            <td>
-                <span style="display:none;">{{ $produit->stock_actuel }}</span>
-                @if ($produit->stock_actuel <= 2)
-                    {{-- <script src="https://unpkg.com/toastify-js"></script> --}}
-                    <script src="../../../../AD/toastify-js-master/src/toastify.js"></script>
-
-                    <script>
-                        setInterval(function() {
-                            Toastify({
-                                text: "Le stock de {{ $produit->libelle }} est faible.",
-                                duration: 5000,
-                                close: true,
-                                gravity: "top", // Position du toast
-                                backgroundColor: "#b30000",
-                            }).showToast();
-                        }, 10000); // 5000 millisecondes correspondent à 5 secondes
-                    </script>
-                @endif
-            </td>
-        </tr>
-    @endforeach
 
     <section class="content">
         <div class="container-fluid">
@@ -50,7 +26,7 @@
                     <!-- small box -->
                     <div class="small-box bg-success">
                         <div class="inner">
-                            <h3 style="font-size: 184%;">{{ $sommeTotalTTC }} FCFA</h3>
+                            <h3 style="font-size: 184%;">{{ number_format($sommeTotalTTC, 0, ',', '.') }} FCFA</h3>
 
                             <p>Mes ventes</p>
                         </div>
@@ -82,7 +58,7 @@
                     <!-- small box -->
                     <div class="small-box bg-danger">
                         <div class="inner">
-                            <h3 style="font-size: 184%;">{{ $sommeMontantDu }} FCFA</h3>
+                            <h3 style="font-size: 184%;">{{ number_format($sommeMontantDu, 0, ',', '.') }} FCFA</h3>
 
                             <p>Dettes clients</p>
                         </div>
@@ -95,11 +71,7 @@
                 </div>
                 <!-- ./col -->
             </div>
-            <!-- /.row -->
-            <!-- Main row -->
-
-
-
+            
             <div id="myCarousel" class="carousel slide" data-ride="carousel">
                 <!-- Indicators -->
                 <ol class="carousel-indicators">

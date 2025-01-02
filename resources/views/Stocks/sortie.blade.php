@@ -2,18 +2,11 @@
 
 @section('content')
 
-
+<br>
 <section class="content">
     <div class="container-fluid">
       <div class="row">
         <div class="col-12">
-
-            {{-- <a href="{{ route ('stock.create')}}" class="btn  bg-gradient-primary">Entrés de stock</a><br><br> --}}
-
-
-            @if (Session::get('success_message'))
-                <div class="alert alert-success">{{ Session::get('success_message') }}</div>
-            @endif
 
           <div class="card">
             <div class="card-header">

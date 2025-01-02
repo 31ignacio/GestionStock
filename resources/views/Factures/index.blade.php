@@ -4,12 +4,9 @@
 
 
 <section class="content">
+  <br>
     <div class="container-fluid">
 
-      <div class="callout callout-info">
-        <h5><i class="fas fa-info"></i> Note:</h5>
-        <b>Cette page présente la liste des factures des clients, triées par ordre alphabétique du nom du client et accompagnées d'un code de facture. Facile à parcourir, elle offre une vue organisée et détaillée de l'historique des transactions client.</b>
-      </div>
       
       <div class="row">
         <div class="col-12">
@@ -30,7 +27,7 @@
               <table id="example1" class="table table-bordered table-striped">
                 <thead>
                     <tr>
-                        
+                        <th>#</th>
                         <th>Client</th>
                         <th>Code de Facture</th>
                         <th>Date</th>
@@ -46,6 +43,7 @@
 
 
                     <tr>
+                      <td>{{ $loop->iteration }}</td>
                       <td>{{ $factureUnique->client->societe }}</td>
 
                         <td><b>{{ $factureUnique->code}}</b></td>
