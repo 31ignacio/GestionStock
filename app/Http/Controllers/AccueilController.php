@@ -17,6 +17,10 @@ class AccueilController extends Controller
 
         $clients = Client::all();
         $factures = Facture::all()->unique('code');
+        // Créez une collection unique en fonction des colonnes code, date, client et totalHT
+        $codesFacturesUniques = $factures->unique(function ($facture) {
+            return $facture->code . $facture->date . $facture->client . $facture->totalHT . $facture->mode;
+        });
         $sommeTotalTTC = 0;
         $sommeMontantDu=0;
         foreach ($factures as $facture) {

@@ -37,7 +37,7 @@
 
                         <div class="table-responsive">
                             <table class="table table-bordered table-striped" id="inventaireTable">
-                                <thead class="thead-dark">
+                                <thead>
                                     <tr>
                                         <th>Produit</th>
                                         <th>Stock Actuel</th>
@@ -71,7 +71,7 @@
                             </table>
                         
                             <!-- Bouton pour afficher les produits avec écart -->
-                            <button id="afficherProduitsEcart" class="btn btn-primary mt-3">
+                            <button id="afficherProduitsEcart" class="btn btn-warning mt-3">
                                 Afficher les produits avec un écart
                             </button>
                         
@@ -80,7 +80,6 @@
                                 <!-- Les produits avec un écart s'afficheront ici -->
                             </div>
                         </div>
-                        
                         
                     </div>
 
@@ -96,20 +95,19 @@
 
 
     <script>
-    
         document.querySelectorAll('.stock-physique').forEach(input => {
             input.addEventListener('input', function() {
                 const row = this.closest('tr');
                 const stockActuel = parseFloat(this.dataset.stockActuel);
                 const stockPhysique = parseFloat(this.value) || 0;
-        
+    
                 // Calcul de l'écart d'inventaire
                 const ecart = stockPhysique - stockActuel;
-        
+    
                 // Mise à jour de l'écart dans le tableau
                 const ecartElement = row.querySelector('.ecart-inventaire .badge');
                 ecartElement.textContent = ecart;
-        
+    
                 // Modifier la couleur en fonction de l'écart (rouge si négatif, vert si positif)
                 if (ecart < 0) {
                     ecartElement.classList.remove('badge-warning', 'badge-success');
@@ -123,17 +121,17 @@
                 }
             });
         });
-        
+    
         // Fonction pour afficher les produits avec écart
         document.getElementById('afficherProduitsEcart').addEventListener('click', function() {
             const produitsAvecEcart = [];
             const rows = document.querySelectorAll('#inventaireTable tbody tr');
-        
+    
             rows.forEach(row => {
                 const produitNom = row.querySelector('.produit-nom').textContent.trim();
                 const ecartElement = row.querySelector('.ecart-inventaire .badge');
                 const ecart = parseFloat(ecartElement.textContent) || 0;
-        
+    
                 if (ecart !== 0) {
                     produitsAvecEcart.push({
                         produit: produitNom,
@@ -141,21 +139,38 @@
                     });
                 }
             });
-        
-            // Afficher la liste des produits avec écart
+    
+            // Afficher le tableau des produits avec écart
             const resultDiv = document.getElementById('produitsAvecEcart');
             resultDiv.innerHTML = ''; // Réinitialiser le contenu
-        
+    
             if (produitsAvecEcart.length > 0) {
-                let html = '<ul class="list-group">';
+                let html = `
+                    <table class="table table-bordered table-striped">
+                        <thead class="badge-danger">
+                            <tr>
+                                <th>Produit</th>
+                                <th>Écart d'Inventaire</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                `;
+    
                 produitsAvecEcart.forEach(item => {
                     html += `
-                        <li class="list-group-item">
-                            <strong>${item.produit}</strong> : Écart d'inventaire = ${item.ecart}
-                        </li>
+                        <tr>
+                            <td><strong>${item.produit}</strong></td>
+                            <td>
+                                <span class="badge 
+                                    ${item.ecart < 0 ? 'badge-danger' : (item.ecart > 0 ? 'badge-success' : 'badge-warning')}">
+                                    ${item.ecart}
+                                </span>
+                            </td>
+                        </tr>
                     `;
                 });
-                html += '</ul>';
+    
+                html += '</tbody></table>';
                 resultDiv.innerHTML = html;
             } else {
                 resultDiv.innerHTML = `
@@ -165,10 +180,9 @@
                 `;
             }
         });
-
     </script>
     
-
+    
 
     <script>
         // Définir la fonction generatePDF à l'extérieur de la fonction click
@@ -188,7 +202,7 @@
             var formattedDate = year + '-' + month + '-' + day;
 
             // Créez le nom de fichier avec la date du jour
-            var filename = 'Ecart_inventaire_détails_du_' + formattedDate + '.pdf';
+            var filename = 'Ecart_inventaire_du_' + formattedDate + '.pdf';
     
             // Options pour la méthode html2pdf
             var opt = {

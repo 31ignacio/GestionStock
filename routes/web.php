@@ -96,8 +96,4 @@ Route::middleware(['auth'])->group(function(){
     });
 
     Route::get('/inventaires/details', [StockController::class, 'indexinventaire'])->name('inventaires.index');
-
-    
-    
-
 });

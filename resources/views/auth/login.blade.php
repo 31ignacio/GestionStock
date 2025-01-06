@@ -6,34 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Gestion_Stock</title>
-
-
-    {{-- <style>
-        .show-password-checkbox {
-            position: absolute;
-            opacity: 0;
-            /* Masque la case à cocher d'origine */
-            cursor: pointer;
-        }
-
-        .show-password-label {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            font-size: 14px;
-            /* Ajustez la taille du texte de la case à cocher */
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-        }
-
-        .styled-password {
-            padding-right: 30px;
-            /* Ajustez la valeur en fonction de la largeur de votre case à cocher */
-        }
-    </style> --}}
-
-
 </head>
 
 

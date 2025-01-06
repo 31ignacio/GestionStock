@@ -35,9 +35,11 @@
                                             <td>{{ $produit->libelle }}</td>
 
                                             <td>
-                                                <a href="#!" data-toggle="modal"
-                                                    data-target="#editEntry{{ $loop->iteration }}"
-                                                    class="btn-sm btn-warning mx-1"><i class="fas fa-edit"></i></a>
+                                                <button data-toggle="modal"
+                                                    data-target="#editEntry{{ $produit->id }}"
+                                                    class="btn-sm btn-warning mx-1">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
 
                                                 <form action="{{ route('produit.delete', ['produit' => $produit->id]) }}"
                                                     method="POST" style="display: inline;">
@@ -135,11 +137,11 @@
 
     {{-- Modifier produit --}}
     @foreach ($produits as $produit)
-        <div class="modal fade" id="editEntry{{ $loop->iteration }}">
+        <div class="modal fade" id="editEntry{{ $produit->id }}">
             <div class="modal-dialog modal-md">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">Editer le produit</h4>
+                        <h4 class="modal-title">Éditer le produit</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -151,36 +153,32 @@
 
                             <div class="row">
                                 <div class="col-md-12 mb-3">
-                                    <label for="societe">Référence</label>
-                                    <input type="text" class="form-control" id="ref" value="{{ $produit->ref }}"
-                                        name="ref" value="{{ old('societe') }}" required style="border-radius:10px;">
+                                    <label for="ref">Référence</label>
+                                    <input type="text" class="form-control" id="ref{{ $produit->id }}" 
+                                        value="{{ $produit->ref }}" name="ref" required style="border-radius:10px;">
 
-                                    {{-- Affiche les erreur sous le input (le @error prend le name du input) --}}
                                     @error('ref')
                                         <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
 
                                 <div class="col-md-12 mb-3">
-                                    <label for="ifu">Produit</label>
-                                    <input type="text" class="form-control" id="libelle" name="libelle"
-                                        value="{{ $produit->libelle }}" value="{{ old('ifu') }}" required
-                                        style="border-radius:10px;">
+                                    <label for="libelle">Produit</label>
+                                    <input type="text" class="form-control" id="libelle{{ $produit->id }}" 
+                                        value="{{ $produit->libelle }}" name="libelle" required style="border-radius:10px;">
 
-                                    {{-- Affiche les erreur sous le input (le @error prend le name du input) --}}
                                     @error('libelle')
                                         <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
+                            </div>
 
-                                <div class="modal-footer">
-
-                                    <button type="submit" class="btn btn-primary">Modifier</button>
-                                </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">Modifier</button>
+                            </div>
                         </form>
                     </div>
                 </div>
-                <!-- /.modal-content -->
             </div>
         </div>
     @endforeach
