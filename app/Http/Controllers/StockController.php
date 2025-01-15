@@ -109,6 +109,7 @@ class StockController extends Controller
 
         $stock->quantite = $request->quantite;
         $stock->date = $dateDuJour;
+        $stock->dateReception= $request->dateReception;
 
         $stock->save();
 
@@ -118,7 +119,7 @@ class StockController extends Controller
         $nouvelleQuantite = $produit->quantite + $request->quantite;
         $produit->update(['quantite' => $nouvelleQuantite]);
 
-        return back()->with('success_message', 'Stock entrés avec succès.');
+        return back()->with('success_message', 'Stock entré avec succès.');
     }
 
     /**

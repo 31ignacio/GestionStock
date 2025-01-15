@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('libelle');
             $table->float('quantite')->nullable();
             $table->datetime('date');
+            $table->datetime('dateReception');
             $table->timestamps();
         });
     }

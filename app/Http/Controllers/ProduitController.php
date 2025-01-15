@@ -59,20 +59,25 @@ class ProduitController extends Controller
     /**
      * Editer un produit
      */
-    public function update(Produit $produit,Request $request)
+    public function update(Produit $produit, Request $request)
     {
         try {
-            $produit->ref = $request->ref;
-            $produit->libelle = $request->libelle;
-            $produit->quantite = $request->quantite;
-            $produit->date = $request->date;
-            $produit->update();
-
-            return redirect()->route('produit.index')->with('success_message', 'Produit mis à jour avec succès');
-        } catch (Exception $e) {
+            // Valider uniquement les champs nécessaires
+            $validatedData = $request->validate([
+                'ref' => 'required|string|max:255',
+                'libelle' => 'required|string|max:255',
+            ]);
+    
+            // Mettre à jour uniquement les attributs spécifiés
+            $produit->update($validatedData);
+    
+            return redirect()->route('produit.index')->with('success_message', 'Produit mis à jour avec succès.');
+        } catch (\Throwable $e) {
+            // Gérer les exceptions
             return back()->with('error_message', 'Une erreur est survenue. Veuillez réessayer.');
         }
     }
+    
 
     /**
      * Supprimer un produit

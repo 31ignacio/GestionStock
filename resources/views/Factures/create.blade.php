@@ -30,8 +30,8 @@
                             <option></option>
                             @foreach ($clients as $client)
                                 <option value="{{ $client->id }} {{ $client->nom }}"
-                                    @if ($client->nom == 'Client') selected @endif>
-                                    {{ $client->nom }} {{ $client->prenom }}
+                                    @if ($client->societe == 'Client') selected @endif>
+                                    {{ $client->societe }}
                                 </option>
                             @endforeach
                         </select>

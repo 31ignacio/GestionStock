@@ -20,6 +20,7 @@
                 <thead>
                 <tr>
                   <th>Clients</th>
+                  <th>Société</th>
                   <th>Montant Dû</th>
                 </tr>
                 </thead>
@@ -30,6 +31,7 @@
                     {{-- <li>{{ $dette['client']->nom }} {{ $dette['client']->prenom }} - Montant dû : {{ $dette['montantTotal'] }}</li> --}}
                 
                   <td>{{ $dette['client']->nom }} {{ $dette['client']->prenom }}</td>
+                  <td>{{ $dette['client']->societe }} </td>
                   <td>{{ $dette['montantTotal'] }}</td>
                   
                 </tr>

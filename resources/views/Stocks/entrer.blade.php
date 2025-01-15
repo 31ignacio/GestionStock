@@ -58,89 +58,78 @@
                           </div>
                         </form>
 
-                        <table class="table table-bordered table-striped">
-                          <thead>
-                            <tr>
-                              <th>Date</th>
-                              <th>Produits</th>
-                              <th>Quantité</th>
-                              @auth
-                                  @if (auth()->user()->role_id == 1)
-                                      <th>Supprimer</th>
-                                  @endif
-                              @endauth
-                            </tr>
-                          </thead>
-                          <tbody>
-                            @forelse ($stocks as $stock)
-                              <tr>
-                                <td>{{ date('d/m/Y', strtotime($stock->date)) }}</td>
-                                <td>{{ $stock->libelle }}</td>
-                                <td>{{ $stock->quantite }}</td>
-                                @auth
-                                    @if (auth()->user()->role_id == 1 || auth()->user()->role_id == 4)
-                                        <td>
-                                            <button class="btn btn-danger" data-toggle="modal"
-                                                data-target="#editModal{{ $stock->id }}"><i
-                                                    class="fas fa-trash-alt"></i></button>
-
-                                        </td>
-                                    @endif
-                                @endauth
-                              </tr>
-
-                              <!-- Modal -->
-                              <div class="modal fade" id="editModal{{ $stock->id }}" tabindex="-1"
-                                role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog" role="document">
-                                      <div class="modal-content">
-                                        <div class="modal-header">
-                                          <h5 class="modal-title" id="editModalLabel">Supprimer le stock</h5>
-                                          <button type="button" class="close" data-dismiss="modal"
-                                              aria-label="Close">
-                                              <span aria-hidden="true">&times;</span>
-                                          </button>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Date de réception</th>
+                                        <th>Date d'enregistrement</th>
+                                        <th>Produits</th>
+                                        <th>Quantité</th>
+                                        @auth
+                                            @if (auth()->user()->role_id == 1)
+                                                <th>Supprimer</th>
+                                            @endif
+                                        @endauth
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @forelse ($stocks as $stock)
+                                        <tr>
+                                            <td>{{ $stock->dateReception ? date('d/m/Y', strtotime($stock->dateReception)) : date('d/m/Y', strtotime($stock->date)) }}</td>
+                                            <td>{{ date('d/m/Y', strtotime($stock->date)) }}</td>
+                                            <td>{{ $stock->libelle }}</td>
+                                            <td>{{ $stock->quantite }}</td>
+                                            @auth
+                                                @if (auth()->user()->role_id == 1 || auth()->user()->role_id == 4)
+                                                    <td>
+                                                        <button class="btn btn-danger" data-toggle="modal"
+                                                            data-target="#editModal{{ $stock->id }}">
+                                                            <i class="fas fa-trash-alt"></i>
+                                                        </button>
+                                                    </td>
+                                                @endif
+                                            @endauth
+                                        </tr>
+                        
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="editModal{{ $stock->id }}" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="editModalLabel">Supprimer le stock</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form action="{{ route('stock.update', $stock->id) }}" method="POST">
+                                                            @csrf
+                                                            <div class="form-group col-md-12">
+                                                                <label for="libelle">Produit :</label>
+                                                                <input type="text" class="form-control" id="libelle" name="libelle" value="{{ $stock->libelle }}" readonly>
+                                                            </div>
+                                                            <div class="form-group col-md-12">
+                                                                <label for="quantite">Quantité :</label>
+                                                                <input type="text" class="form-control" id="quantite" name="quantite" value="{{ $stock->quantite }}" readonly>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="submit" class="btn btn-sm btn-danger">Supprimer</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <!-- Inside the modal body -->
-                                        <div class="modal-body">
-                                          <!-- Your form inputs for editing vehicle information here -->
-                                          <form action="{{ route('stock.update', $stock->id) }}"
-                                            method="POST">
-                                            @csrf
-                                            
-                                            <div class="form-group col-md-12">
-                                                <label for="marque">Produit :</label>
-                                                <input type="text" class="form-control" id="libelle"
-                                                    name="libelle" value="{{ $stock->libelle }}" readonly>
-                                            </div>
-
-                                            <div class="form-group col-md-12">
-                                                <label for="prix">Quantité :</label>
-                                                <input type="text" class="form-control" id="quantite"
-                                                    name="quantite" value="{{ $stock->quantite }}"
-                                                    readonly>
-                                            </div>
-
-                                            </div>
-
-                                            <div class="modal-footer">
-
-                                                <button type="submit"
-                                                    class="btn btn-sm btn-danger">Supprimer</button>
-                                            </div>
-                                          </form>
-                                        </div>
-                                      </div>
-                                    </div>
-                              </div>
-                            @empty
-
-                              <tr>
-                                <td class="cell text-center" colspan="4">Aucun stock ajoutés</td>
-                              </tr>
-                            @endforelse
-                          </tbody>
-                        </table>
+                                    @empty
+                                        <tr>
+                                            <td class="text-center" colspan="5">Aucun stock ajouté</td>
+                                        </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
+                        </div>
+                        
 
                         <br>
                         {{-- LA PAGINATION --}}
@@ -219,6 +208,23 @@
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
                         </div>
+
+                        <div class="col-12 mb-3">
+                            <label for="dateReception" class="form-label">Date de réception</label>
+                            <input 
+                                type="date" 
+                                class="form-control" 
+                                id="dateReception" 
+                                name="dateReception" 
+                                value="{{ old('dateReception') }}" 
+                                required>
+                            @error('dateReception')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        
+                        
+                        
     
                         <!-- Boutons -->
                         <div class="modal-footer">
@@ -253,6 +259,19 @@
               });
           });
       });
+    </script>
+
+    {{-- js pour la date de reception --}}
+
+    <script>
+        // Récupérer l'élément du champ de date
+        const dateInput = document.getElementById('dateReception');
+    
+        // Obtenir la date du jour au format YYYY-MM-DD
+        const today = new Date().toISOString().split('T')[0];
+    
+        // Définir la date maximale dans le champ
+        dateInput.setAttribute('max', today);
     </script>
 
 

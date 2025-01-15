@@ -171,6 +171,16 @@
                                         <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
+
+                                {{-- <div class="col-md-12 mb-3">
+                                    <label for="libelle">Quantité</label>
+                                    <input type="text" class="form-control" id="quantite{{ $produit->id }}" 
+                                        value="{{ $produit->quantite }}" name="quantite" required style="border-radius:10px;">
+
+                                    @error('quantitr')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div> --}}
                             </div>
 
                             <div class="modal-footer">
